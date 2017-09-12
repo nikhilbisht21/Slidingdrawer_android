@@ -1,0 +1,91 @@
+package mybook.mybook;
+
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+
+/*
+ * Created by Demon on 3/26/2017.
+ */
+
+public class home extends AppCompatActivity {
+
+    public void onCreate(Bundle savedInstanceState){
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_layout);
+
+
+
+        final Handler handler=new Handler();
+        final ImageView im3=(ImageView)findViewById(R.id.imageViewm1); //image button to show drawer
+        final ImageView im4=(ImageView)findViewById(R.id.imageViewm2); //image to hide drawer
+        final ViewGroup gp1=(ViewGroup) findViewById(R.id.rel4);        //View which is to be animated i.e container having drawer in it
+        final ScrollView sv1=(ScrollView)findViewById(R.id.scrollView_m); //This is used further to make background of drawer non-clickable
+        final Animation anim2= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide1); //This animation is use to show drawer  
+        final Animation anim3= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide2); //This animation is used to hide drawer
+        final Animation anim4= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rot2);   //used to animate image button 
+        final Animation anim5= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rot3);  //used to animate image button
+
+        im3.setOnClickListener(new View.OnClickListener()
+        {public void onClick(View v)
+        {               //Event listener to show the drawer
+            gp1.setVisibility(View.VISIBLE);            //to make layout visible/slide
+            im3.setVisibility(View.GONE);               //to make image 1 gone(There is difference in invisible and gone,Its useful so find it on your own)
+            im4.setVisibility(View.VISIBLE);            //to make image 2 visible
+            im4.startAnimation(anim5);                  //To animate image 2 which will be used to hide drawer
+            gp1.startAnimation(anim2);                  //Used to animate drawer(i.e. moving it from left to write)
+            sv1.setClickable(false);                    //To make background of drawer non-clickable(Though it was not working properly so i used the code written below)
+
+            sv1.setOnTouchListener(new View.OnTouchListener()           //This is function is actually making background non-clickable
+            {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return true;
+                }
+            });
+
+        }});
+
+        im4.setOnClickListener(new View.OnClickListener()
+        {public void onClick(View v)
+        {           //Event listener to hide the drawer
+            
+            handler.postDelayed(new Runnable()      //This is used to hide drawer after a certain interval of time(Why I did this ? Please find it on your own because its important conceptual wise)
+            {
+                @Override
+                public void run() {
+                    gp1.setVisibility(View.GONE);
+                }
+            },300);
+
+
+
+            im4.setVisibility(View.GONE);       //to make image 2 gone(There is difference in invisible and gone,Its useful so find it on your own)
+            im3.setVisibility(View.VISIBLE);    //to make image 1 visible
+            im3.startAnimation(anim4);           //To animate image 1 which will be used to show drawer
+            gp1.startAnimation(anim3);           //To animate the drawer
+            sv1.setClickable(true);             //To make background clickable again(Its only experimental you can remove this because it was not not working properly when I did it
+
+            sv1.setOnTouchListener(new View.OnTouchListener()   //Actual function to make background clickable again
+            {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return false;
+                }
+            });
+
+        }});
+
+
+
+    }
+}

@@ -14,5 +14,5 @@ Where to save file:
 activity----->where to save activity file ? you know that
 activity_layout----->In layout folder
 slide1,slide2,rot2,rot3------->In anim folder
-images------->in drawable
+images------->in drawable folder 
 colors.xml------->In Resource/value
